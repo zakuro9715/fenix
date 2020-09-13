@@ -107,6 +107,10 @@ impl Writer {
             }
         }
     }
+
+    pub fn print(&mut self, s: &str) {
+        self.write_string(s)
+    }
 }
 
 impl fmt::Write for Writer {
