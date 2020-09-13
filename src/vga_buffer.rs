@@ -57,7 +57,7 @@ pub struct Writer {
 impl Writer {
     pub fn new() -> Self {
         Self {
-            column_position: 0,
+           column_position: 0,
             color_code: ColorCode::new(Color::Yellow, Color::Black),
             buffer: unsafe { &mut *(0xb8000 as *mut Buffer) },
         }
@@ -116,6 +116,3 @@ impl fmt::Write for Writer {
     }
 }
 
-impl Writer {
-
-}
