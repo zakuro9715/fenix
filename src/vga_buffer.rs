@@ -102,14 +102,12 @@ impl Writer {
 
     pub fn write_string(&mut self, s: &str) {
         for byte in s.bytes() {
-            self.write_byte(
-                match byte {
-                    // printable characters
-                    0x20..=0x7e | b'\n' => byte,
-                    // replace unprintable characters with a space
-                    _ => b' ',
-                }
-            )
+            self.write_byte(match byte {
+                // printable characters
+                0x20..=0x7e | b'\n' => byte,
+                // replace unprintable characters with a space
+                _ => b' ',
+            })
         }
     }
 }
@@ -120,7 +118,6 @@ impl fmt::Write for Writer {
         Ok(())
     }
 }
-
 
 #[macro_export]
 macro_rules! print {
@@ -139,14 +136,10 @@ pub fn _print(args: fmt::Arguments) {
     WRITER.lock().write_fmt(args).unwrap();
 }
 
-
 use lazy_static::lazy_static;
 use spin::Mutex;
 
 lazy_static! {
-    pub static ref WRITER: Mutex<Writer> = Mutex::new(Writer::new(
-        Colors::new(Color::Yellow, Color::Black),
-    ));
+    pub static ref WRITER: Mutex<Writer> =
+        Mutex::new(Writer::new(Colors::new(Color::Yellow, Color::Black),));
 }
-
-
