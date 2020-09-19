@@ -8,8 +8,7 @@ use core::panic::PanicInfo;
 
 #[no_mangle]
 pub extern "C" fn _start() -> ! {
-    println!("Hello World");
-    println!("Hello Fenix");
+    println!("FenixOS {}\n", env!("CARGO_PKG_VERSION"));
 
     loop {}
 }
