@@ -66,15 +66,6 @@ impl Writer {
     }
 
     pub fn new_line(&mut self) {
-        /*
-        for row in 1..BUFFER_HEIGHT {
-            for col in 0..BUFFER_WIDTH {
-                let c = self.buffer.chars[row][col].read();
-                self.buffer.chars[row - 1][col].write(c);
-            }
-        }
-        self.clear_row(self.row);
-        */
         self.row += 1;
         self.col = 0;
     }
