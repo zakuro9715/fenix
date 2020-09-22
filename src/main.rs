@@ -7,6 +7,7 @@
 
 extern crate rlibc;
 mod vga_buffer;
+mod qemu;
 
 use core::panic::PanicInfo;
 
@@ -34,6 +35,7 @@ fn run_tests(tests: &[&dyn Fn()]) {
         test();
     }
     println!("Success!");
+    qemu::exit_qemu(qemu::QemuExitCode::Success);
 }
 
 #[test_case]
