@@ -10,7 +10,7 @@ build:
 	cargo build
 
 test:
-	cargo test
+	cargo test --lib
 
 test-fail:
-	cargo test --features test_fail
+	cargo test --lib --features test_fail
