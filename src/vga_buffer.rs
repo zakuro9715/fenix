@@ -143,3 +143,19 @@ lazy_static! {
     pub static ref WRITER: Mutex<Writer> =
         Mutex::new(Writer::new(Colors::new(Color::Yellow, Color::Black),));
 }
+
+#[test_case]
+fn test_println() {
+    let s1 = "test println";
+    let s2 = "next line";
+    let row = WRITER.lock().row;
+    println!("{}\n{}", s1, s2);
+    for (i, expected) in s1.chars().enumerate() {
+        let actual = char::from(WRITER.lock().buffer.chars[row][i].read().ascii);
+        assert_eq!(expected, actual);
+    }
+    for (i, expected) in s2.chars().enumerate() {
+        let actual = char::from(WRITER.lock().buffer.chars[row + 1][i].read().ascii);
+        assert_eq!(expected, actual);
+    }
+}
