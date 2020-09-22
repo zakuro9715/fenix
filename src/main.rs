@@ -8,6 +8,7 @@
 extern crate rlibc;
 mod vga_buffer;
 mod qemu;
+mod serial;
 
 use core::panic::PanicInfo;
 
@@ -21,20 +22,30 @@ pub extern "C" fn _start() -> ! {
     loop {}
 }
 
+#[cfg(not(test))]
 #[panic_handler]
 fn panic(info: &PanicInfo) -> ! {
     println!("{}", info);
     loop {}
 }
 
+#[cfg(test)]
+#[panic_handler]
+fn panic(info: &PanicInfo) -> ! {
+    serial_println!("\n[Failed]");
+    serial_println!("Error: {}\n", info);
+    qemu::exit_qemu(qemu::QemuExitCode::Failed);
+    loop {}
+}
+
 
 #[cfg(test)]
 fn run_tests(tests: &[&dyn Fn()]) {
-    println!("Fenix test.\nRunning {} tests...", tests.len());
+    serial_println!("Fenix test.\nRunning {} tests...", tests.len());
     for test in tests {
         test();
     }
-    println!("Success!");
+    serial_println!("Success!");
     qemu::exit_qemu(qemu::QemuExitCode::Success);
 }
 
