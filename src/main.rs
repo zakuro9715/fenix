@@ -53,3 +53,9 @@ fn run_tests(tests: &[&dyn Fn()]) {
 fn test_example() {
     assert_eq!(1, 1);
 }
+
+#[cfg(feature="test_fail")]
+#[test_case]
+fn test_fail() {
+    assert!(false, "test_fail feature enabeld");
+}
