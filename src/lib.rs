@@ -10,7 +10,7 @@ pub mod serial;
 pub mod vga_buffer;
 
 mod tester;
-pub use tester::test_runner;
+pub use tester::*;
 
 use core::panic::PanicInfo;
 

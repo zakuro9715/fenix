@@ -14,7 +14,7 @@ mod internal {
         loop {}
     }
 
-    fn print_test_name<T>() {
+    pub fn print_test_name<T>() {
         let name = core::any::type_name::<T>();
         serial_print!("      {}", name); // put 6 spaces for label like " [OK] "
         if name.len() < 16 {
@@ -22,12 +22,12 @@ mod internal {
         };
     }
 
-    enum TestResult {
+    pub enum TestResult {
         OK,
         NG,
     }
 
-    fn print_test_result_label(status: TestResult) {
+    pub fn print_test_result_label(status: TestResult) {
         use TestResult::{NG, OK};
         match status {
             OK => serial_println!("\x1b[1G\x1b[1m\x1b[32m [OK] \x1b[m"), // bold green
@@ -50,25 +50,39 @@ mod internal {
         }
     }
 
-    pub fn test_runner(tests: &[&dyn Testable]) {
+    pub fn print_start_test_message(n: usize) {
         serial_println!();
         serial_println!("\x1b[1m\x1b[38;5;202mFenix test mode.\x1b[m"); // bold orange
-        serial_println!("Running {} tests...", tests.len());
+        serial_println!("Running {} tests...", n);
         serial_println!();
+    }
 
+    pub fn print_complete_test_message() {
+        serial_println!();
+        serial_println!("\x1b[1m\x1b[32mSuccess!\x1b[m"); // bold green
+    }
+
+    pub fn test_runner(tests: &[&dyn Testable]) {
+        print_start_test_message(tests.len());
         for test in tests {
             test.run();
         }
-
-        serial_println!();
-        serial_println!("\x1b[1m\x1b[32mSuccess!\x1b[m"); // bold green
-
+        print_complete_test_message();
         qemu::exit_qemu(qemu::QemuExitCode::Success);
+    }
+
+    pub fn panic_test_runner(tests: &[&dyn Testable]) {
+        print_start_test_message(tests.len());
+        for test in tests {
+            test.run();
+            print_test_result_label(TestResult::NG);
+            qemu::exit_qemu(qemu::QemuExitCode::Failed);
+        }
     }
 }
 
 #[cfg(any(test, debug_assertions))]
-pub use internal::{test_runner, fail_with_panic};
+pub use internal::*;
 
 #[cfg(not(any(test, debug_assertions)))]
 pub fn test_runner(_: &[&dyn Fn()]) {
