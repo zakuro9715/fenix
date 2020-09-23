@@ -4,8 +4,8 @@
 #![test_runner(fenix::test_runner)]
 #![reexport_test_harness_main = "test_main"]
 
-use fenix::println;
 use core::panic::PanicInfo;
+use fenix::println;
 
 #[no_mangle]
 pub extern "C" fn _start() -> ! {

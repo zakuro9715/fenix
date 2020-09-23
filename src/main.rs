@@ -4,7 +4,6 @@
 #![test_runner(fenix::test_runner)]
 #![reexport_test_harness_main = "test_main"]
 
-
 use core::panic::PanicInfo;
 
 #[no_mangle]
