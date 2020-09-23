@@ -18,7 +18,7 @@ pub extern "C" fn _start() -> ! {
 }
 
 #[panic_handler]
-fn panic(info: &PanicInfo) -> ! {
+fn panic(_: &PanicInfo) -> ! {
     print_test_result_label(TestResult::OK);
     print_complete_test_message();
     exit_qemu(QemuExitCode::Success);
