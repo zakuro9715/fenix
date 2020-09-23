@@ -85,8 +85,7 @@ mod internal {
 pub use internal::*;
 
 #[cfg(not(any(test, debug_assertions)))]
-pub fn test_runner(_: &[&dyn Fn()]) {
-}
+pub fn test_runner(_: &[&dyn Fn()]) {}
 
 #[test_case]
 fn test_ok() {
