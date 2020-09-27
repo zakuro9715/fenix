@@ -11,6 +11,8 @@ pub extern "C" fn _start() -> ! {
     use fenix::println;
     println!("FenixOS {}\n", env!("CARGO_PKG_VERSION"));
 
+    fenix::init();
+
     #[cfg(test)]
     test_main();
 
