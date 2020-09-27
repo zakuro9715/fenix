@@ -24,12 +24,13 @@ fn panic(info: &PanicInfo) -> ! {
 
 #[cfg(any(test, debug_assertions))]
 pub fn handle_panic(info: &PanicInfo) -> ! {
+    println!("{}", info);
     tester::fail_with_panic(info);
 }
 
 #[cfg(not(any(test, debug_assertions)))]
 pub fn handle_panic(info: &PanicInfo) -> ! {
-    serial_println!("{}", info);
+    println!("{}", info);
     loop {}
 }
 
