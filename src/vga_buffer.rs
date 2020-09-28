@@ -35,24 +35,24 @@ impl Colors {
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 #[repr(C)]
-struct ScreenChar {
-    ascii: u8,
-    color: Colors,
+pub struct ScreenChar {
+    pub ascii: u8,
+    pub color: Colors,
 }
 
 const BUFFER_HEIGHT: usize = 25;
 const BUFFER_WIDTH: usize = 80;
 
 #[repr(transparent)]
-struct Buffer {
-    chars: [Volatile<ScreenChar>; BUFFER_WIDTH * BUFFER_HEIGHT],
+pub struct Buffer {
+    pub chars: [Volatile<ScreenChar>; BUFFER_WIDTH * BUFFER_HEIGHT],
 }
 
 pub struct Writer {
-    row: usize,
-    col: usize,
-    color: Colors,
-    buffer: &'static mut Buffer,
+    pub row: usize,
+    pub col: usize,
+    pub color: Colors,
+    pub buffer: &'static mut Buffer,
 }
 
 fn calc_buffer_index(row: usize, col: usize) -> usize {
