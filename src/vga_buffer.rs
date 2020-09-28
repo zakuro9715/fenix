@@ -45,7 +45,7 @@ const BUFFER_WIDTH: usize = 80;
 
 #[repr(transparent)]
 struct Buffer {
-    chars: [[Volatile<ScreenChar>; BUFFER_WIDTH]; BUFFER_HEIGHT],
+    chars: [Volatile<ScreenChar>; BUFFER_WIDTH * BUFFER_HEIGHT],
 }
 
 pub struct Writer {
@@ -53,6 +53,10 @@ pub struct Writer {
     col: usize,
     color: Colors,
     buffer: &'static mut Buffer,
+}
+
+fn calc_buffer_index(row: usize, col: usize) -> usize {
+    row * BUFFER_WIDTH + col
 }
 
 impl Writer {
@@ -76,12 +80,12 @@ impl Writer {
             color: self.color,
         };
         for col in 0..BUFFER_WIDTH {
-            self.buffer.chars[row][col].write(blank);
+            self.buffer.chars[calc_buffer_index(row, col)].write(blank);
         }
     }
 
     fn put_byte(&mut self, byte: u8) {
-        self.buffer.chars[self.row][self.col].write(ScreenChar {
+        self.buffer.chars[calc_buffer_index(self.row, self.col)].write(ScreenChar {
             ascii: byte,
             color: self.color,
         });
@@ -110,6 +114,7 @@ impl Writer {
             })
         }
     }
+
 }
 
 impl fmt::Write for Writer {
@@ -151,11 +156,11 @@ fn test_println() {
     let row = WRITER.lock().row;
     println!("{}\n{}", s1, s2);
     for (i, expected) in s1.chars().enumerate() {
-        let actual = char::from(WRITER.lock().buffer.chars[row][i].read().ascii);
+        let actual = char::from(WRITER.lock().buffer.chars[calc_buffer_index(row, i)].read().ascii);
         assert_eq!(expected, actual);
     }
     for (i, expected) in s2.chars().enumerate() {
-        let actual = char::from(WRITER.lock().buffer.chars[row + 1][i].read().ascii);
+        let actual = char::from(WRITER.lock().buffer.chars[calc_buffer_index(row + 1, i)].read().ascii);
         assert_eq!(expected, actual);
     }
 }
