@@ -46,3 +46,9 @@ img:
 clean:
 	rm -rf ${MNT}
 	rm -rf ${TMP}
+
+help:
+	@echo Fenix
+	@echo "  run   : Run fenix on qemu"
+	@echo "  build : build FENIX.EFI"
+	@echo "  clean : Clean all"
