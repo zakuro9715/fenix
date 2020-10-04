@@ -14,7 +14,6 @@ void efi_main(
   void *ImageHandle __attribute ((unused)),
   struct EFI_SYSTEM_TABLE *SystemTable)
 {
-  1 / 0;
   SystemTable->ConOut->ClearScrenn(SystemTable->ConOut);
   SystemTable->ConOut->OutputString(SystemTable->ConOut, L"Hello Worald\n");
 
