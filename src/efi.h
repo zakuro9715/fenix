@@ -1,5 +1,4 @@
-/*
-struct EFI_SYSTEM_TABLE {
+typedef struct EFISystemTable {
   char _buf[60];
   struct EFI_SIMPLE_TEXT_OUTPUT_PROTOCOL {
     unsigned long long _buf;
@@ -9,16 +8,8 @@ struct EFI_SYSTEM_TABLE {
         unsigned long long (*ClearScrenn)(
           struct EFI_SIMPLE_TEXT_OUTPUT_PROTOCOL *This);
     } *ConOut;
-};
-*/
+} EFISystemTable;
 
-#include "efi.h"
-
-void efi_main(
-  void *ImageHandle __attribute ((unused)),
-  EFISystemTable *SystemTable)
-{
-	SystemTable->ConOut->ClearScrenn(SystemTable->ConOut);
-	SystemTable->ConOut->OutputString(SystemTable->ConOut, L"Hello Worald\n");
-  while(1);
-}
+void efi_init(
+    void *ImageHandle __attribute ((unused)),
+    EFISystemTable* system_table);

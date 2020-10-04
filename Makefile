@@ -7,7 +7,7 @@ EFI := FENIX.EFI
 
 QEMU_ARGS= \
 	-bios OVMF.fd \
-	-drive format=raw,file=fat:rw:mnt \
+	-hda fat:rw:mnt \
 
 BOOT_DIR=${MNT}/EFI/BOOT
 MNT := mnt
@@ -17,7 +17,7 @@ TMP := tmp
 EFI_MAIN_C = ${SRC}/efi_main.c
 EFI_MAIN_O = ${TMP}/efi_main.o
 
-SOURCES := ${ELF_MAIN_C}
+SOURCES := ${SRC}/*.c
 
 CLANG_FLAGS= \
 	-target x86_64-pc-win32-coff \
@@ -29,23 +29,19 @@ CLANG_FLAGS= \
 
 LINKER_FLAGS := \
 	-subsystem:efi_application -nodefaultlib \
-	-entry:efi_main ${EFI_MAIN_O} -out:${BOOT_DIR}/FENIX.EFI
+	-entry:efi_main ${EFI_MAIN_O} -out:${BOOT_DIR}/BOOTX64.EFI
 
 
 # --
 
 
-run: build img
+run: build
 	${QEMU} ${QEMU_ARGS}
 
 build:
 	mkdir -p ${BOOT_DIR} ${TMP}
 	${CC} ${CLANG_FLAGS}
 	${LD} ${LINKER_FLAGS}
-
-img:
-	dd if=/dev/zero of=${TMP}/fenix.img bs=1M count=1024
-	/sbin/mkfs.vfat ${TMP}/fenix.img
 
 clean:
 	rm -rf ${MNT}
