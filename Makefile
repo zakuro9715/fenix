@@ -3,7 +3,7 @@ CC := clang
 
 LINKER=lld
 QEMU := qemu-system-x86_64
-BOOTX64 := BOOTX64.EFI
+EFI := FENIX.EFI
 
 QEMU_ARGS= \
 	-bios OVMF.fd \
@@ -29,7 +29,11 @@ CLANG_FLAGS= \
 
 LINKER_FLAGS := \
 	-subsystem:efi_application -nodefaultlib \
-	-entry:efi_main ${EFI_MAIN_O} -out:${BOOT_DIR}/BOOTX64.EFI
+	-entry:efi_main ${EFI_MAIN_O} -out:${BOOT_DIR}/FENIX.EFI
+
+
+# --
+
 
 run: build img
 	${QEMU} ${QEMU_ARGS}
