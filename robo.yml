@@ -1,0 +1,8 @@
+run:
+  command: |
+    robo build
+    qemu-system-x86_64 -bios OVMF.fd -hda fat:rw:build/mnt
+build:
+  exec: ninja -C build
+setup:
+  exec: meson setup --cross-file=uefi.ini build .
